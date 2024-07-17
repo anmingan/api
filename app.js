@@ -37,3 +37,30 @@ app.get('/api/info',(req,res)=>{
         }
     })
 })
+
+// 查询所有数据
+app.get('/api/getAllRecord',(req,res)=>{
+  const sql = "select * from flyRecords"
+  connection.query(sql,(err,result)=>{
+    if(err){
+        console.log(err)
+      return res.send({state:1,message:err})
+    }else{
+        return res.send({ state: 0, message: "查询成功", data: result });
+
+    }
+ })
+})
+
+app.get("/api/addRecord",(req,res)=>{
+  const sql = "insert into flyRecords(done,date) values('"+1+"','"+new Date().toLocaleString()+"')"
+  connection.query(sql,(err,result)=>{
+    if(err){
+        console.log(err)
+      return res.send({state:1,message:err})
+    }else{
+        return res.send({ state: 0, message: "查询成功", data: result });
+
+    }
+ })
+})
