@@ -59,7 +59,7 @@ app.get("/api/addRecord",(req,res)=>{
         console.log(err)
       return res.send({state:1,message:err})
     }else{
-        return res.send({ state: 0, message: "查询成功", data: result });
+        return res.send({ state: 0, message: "增加" });
 
     }
  })
