@@ -1,10 +1,10 @@
 const express = require('express')
 const cors = require('cors')
 const dayjs = require('dayjs')
-
+const bodyParser = require('body-parser');
 const app = express()
 app.use(cors())
-
+app.use(bodyParser.json());
 app.listen(8888,()=>{
     console.log('port',8888)
 })
@@ -55,6 +55,20 @@ app.get('/api/getAllRecord',(req,res)=>{
 
 app.get("/api/addRecord",(req,res)=>{
   const sql = "insert into flyRecords(datainfo) values('"+dayjs(new Date()).format('YYYY-MM-DD')+"')"
+  connection.query(sql,(err,result)=>{
+    if(err){
+        console.log(err)
+      return res.send({state:1,message:err})
+    }else{
+        return res.send({ state: 0, message: "增加" });
+
+    }
+ })
+})
+
+app.post("/api/addFeeling",(req,res)=>{
+  const feeling = req.body.feeling
+  const sql = "update flyRecords set feeling = '"+feeling+"' where datainfo='"+dayjs(new Date()).format('YYYY-MM-DD')+"'"
   connection.query(sql,(err,result)=>{
     if(err){
         console.log(err)
