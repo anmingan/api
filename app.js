@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const dayjs = require('dayjs')
 
 const app = express()
 app.use(cors())
@@ -53,7 +54,7 @@ app.get('/api/getAllRecord',(req,res)=>{
 })
 
 app.get("/api/addRecord",(req,res)=>{
-  const sql = "insert into flyRecords(done,date) values('"+1+"','"+new Date().toLocaleString()+"')"
+  const sql = "insert into flyRecords(datainfo) values('"+dayjs(new Date()).format('YYYY-MM-DD')+"')"
   connection.query(sql,(err,result)=>{
     if(err){
         console.log(err)
