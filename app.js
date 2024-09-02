@@ -3,32 +3,42 @@ import express from 'express';
 import cors from 'cors';
 import dayjs from 'dayjs';
 import bodyParser from 'body-parser';
-import  { batchConnect} from './utils.js'
+import mysql from 'mysql';
+// import  { batchConnect} from './utils.js'
+import fs from 'fs';
+import http from 'http';
+import https from 'https'
 
-
+const privateKey = fs.readFileSync('./static/amsgdsg.com.key');
+const certificate = fs.readFileSync('./static/amsgdsg.com.crt');
+const credentials= {
+  key: privateKey,
+  cert: certificate
+}
 const app = express()
 app.use(cors())
 app.use(bodyParser.json());
-app.listen(8888,()=>{
-    console.log('port',8888)
-})
-
+var httpsServer = https.createServer(credentials,app);
+app.get('/',function(req,res,next){
+  res.send('Hello Express+https');
+});
+httpsServer.listen(8888)
 // const mysql = require('mysql');
 
-// const connection = mysql.createConnection({
-//     host:"47.121.191.226",
-//     user: "root",//用户名
-//     password: "am915679480",
-//      database: "testdata", //指定要操
-// });
+const connection = mysql.createConnection({
+    host:"47.121.191.226",
+    user: "root",//用户名
+    password: "am915679480",
+     database: "testdata", //指定要操
+});
 
-// connection.connect((err) => {
-//   if (err) {
-//     console.error('Error connecting to MySQL: ' + err.stack);
-//     return;
-//   }
-//   console.log('Connected to MySQL as id ' + connection.threadId);
-// })
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL: ' + err.stack);
+    return;
+  }
+  console.log('Connected to MySQL as id ' + connection.threadId);
+})
 
 app.get('/api/info',(req,res)=>{
     const sql = "select * from info"
@@ -126,15 +136,15 @@ app.post("/api/addReason",(req,res)=>{
     }
  })
 })
-// 做饭
-app.get("/api/getGoodsRecord", (req, res) => {
-  const sql = "select * from foodsRecords"
-  batchConnect(sql,req, res)
-})
-app.get("/api/gettrainingProgramsRecord",(req, res) => {
-  const sql = "select * from trainingProgramRecords"
-  batchConnect(sql,req, res)
-})
+// // 做饭
+// app.get("/api/getGoodsRecord", (req, res) => {
+//   const sql = "select * from foodsRecords"
+//   batchConnect(sql,req, res)
+// })
+// app.get("/api/gettrainingProgramsRecord",(req, res) => {
+//   const sql = "select * from trainingProgramRecords"
+//   batchConnect(sql,req, res)
+// })
 
 app.post("/api/login",(req,res)=>{
   const username = req.body.username
