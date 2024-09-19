@@ -1,7 +1,7 @@
 const mysql  = require('mysql')
 const db = mysql.createPool({
-    host:"47.121.191.226",
+    host:"8.140.230.148",
     user: "root",//用户名
-    password: "am915679480",
+    password: "Root666888!",
      database: "testdata", //指定要操
 })
